@@ -35,6 +35,98 @@ The API backend provides:
 
 ---
 
+## VS Code Setup (Recommended)
+
+### **Install Required Extensions**
+
+For the best FastAPI development experience in VS Code, install these official extensions:
+
+#### **1. Python Extension (Official - Required)**
+
+```bash
+# Install via command line
+code --install-extension ms-python.python
+
+# Or in VS Code:
+# Press Cmd+Shift+X (Mac) or Ctrl+Shift+X (Windows/Linux)
+# Search for "Python"
+# Install "Python" by Microsoft
+```
+
+**Features:**
+- IntelliSense (autocomplete)
+- Linting (code quality checks)
+- Debugging
+- Code formatting
+- Virtual environment support
+
+#### **2. FastAPI Extension (Official - Highly Recommended)**
+
+```bash
+# Install via command line
+code --install-extension FastAPILabs.fastapi-vscode
+
+# Or in VS Code:
+# Press Cmd+Shift+X (Mac) or Ctrl+Shift+X (Windows/Linux)
+# Search for "FastAPI"
+# Install "FastAPI" by FastAPILabs
+```
+
+**Features:**
+- Route explorer (tree view of all endpoints)
+- Quick navigation to route definitions
+- Search FastAPI routes
+- FastAPI Cloud integration
+- Better autocomplete for FastAPI code
+
+#### **3. Additional Helpful Extensions (Optional)**
+
+```bash
+# Pylance - Enhanced Python language support
+code --install-extension ms-python.vscode-pylance
+
+# Python Debugger
+code --install-extension ms-python.debugpy
+
+# Better TOML support (for pyproject.toml)
+code --install-extension tamasfe.even-better-toml
+```
+
+### **VS Code Settings for This Project**
+
+Create `.vscode/settings.json` in your project root:
+
+```json
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/api/venv/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
+}
+```
+
+### **Verify Installation**
+
+1. Open VS Code in the `api` directory: `code .`
+2. Check bottom-left corner for Python version
+3. Open Command Palette (Cmd/Ctrl+Shift+P)
+4. Type "FastAPI" - you should see FastAPI-related commands
+5. Look for "FastAPI Routes" panel in the sidebar
+
+---
+
 ## Project Structure (FastAPI Standard)
 
 ### **FastAPI uses "Routers" (not "Controllers")**
@@ -164,6 +256,80 @@ class CardResponse(BaseModel):  # Response DTO
 | **Business Logic** | `services/` | `@Service` | `Services/` |
 | **Database** | `models/` | `@Entity` | `Models/` |
 | **Validation** | `schemas/` | `DTO` | `Requests/` |
+
+---
+
+## How This Project Was Created
+
+### **Method 1: Manual Creation (What We Did)**
+
+FastAPI doesn't have an official CLI like Django's `startproject`, so we created the structure manually:
+
+```bash
+# Navigate to api directory
+cd api
+
+# Create app directory and files
+mkdir -p app
+touch app/__init__.py
+touch app/main.py
+touch app/config.py
+
+# Create requirements.txt
+touch requirements.txt
+
+# Create environment template
+touch .env.example
+```
+
+Then we populated each file with the basic FastAPI setup code.
+
+### **Method 2: Using Cookiecutter (Alternative)**
+
+You can also use a project template generator:
+
+```bash
+# Install cookiecutter
+pip install cookiecutter
+
+# Generate FastAPI project from template
+cookiecutter https://github.com/tiangolo/full-stack-fastapi-postgresql
+```
+
+### **Method 3: Using FastAPI CLI (Unofficial)**
+
+```bash
+# Install fastapi-cli
+pip install fastapi-cli
+
+# Create new project (basic structure)
+fastapi new my-project
+```
+
+### **What We Created**
+
+**Current Project Structure:**
+```
+api/
+├── app/
+│   ├── __init__.py          # Package initialization
+│   ├── main.py              # FastAPI app with health endpoints
+│   └── config.py            # Pydantic settings configuration
+├── requirements.txt         # Python dependencies
+├── .env.example            # Environment variables template
+└── README.md               # This documentation
+```
+
+**Files Created:**
+
+1. **`app/__init__.py`** - Package marker with version
+2. **`app/main.py`** - FastAPI application with:
+   - Health check endpoints (`/` and `/health`)
+   - CORS middleware configured
+   - Auto-generated API docs at `/docs`
+3. **`app/config.py`** - Configuration using Pydantic Settings
+4. **`requirements.txt`** - All project dependencies
+5. **`.env.example`** - Environment variable template
 
 ---
 

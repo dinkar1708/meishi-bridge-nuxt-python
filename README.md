@@ -10,8 +10,6 @@
 [![Flutter](https://img.shields.io/badge/Flutter-latest-02569B)](https://flutter.dev)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-**Repository:** `meishi-bridge-nuxt-python`
-
 [Live Demo](#) • [日本語](README.ja.md)
 
 </div>
@@ -216,8 +214,6 @@ MIT License - See [LICENSE](LICENSE) file for details.
 If this project helped you, please give it a star!
 
 **Built with love for Japanese business culture**
-
-Perfect for: **Portfolios • Technical Interviews • Client Delivery • Startup MVP**
 
 ---
 

@@ -315,6 +315,9 @@ api/
 │   ├── __init__.py          # Package initialization
 │   ├── main.py              # FastAPI app with health endpoints
 │   └── config.py            # Pydantic settings configuration
+├── docs/
+│   ├── README.md           # Documentation index
+│   └── SETUP.md            # Complete setup guide
 ├── requirements.txt         # Python dependencies
 ├── .env.example            # Environment variables template
 └── README.md               # This documentation
@@ -330,177 +333,60 @@ api/
 3. **`app/config.py`** - Configuration using Pydantic Settings
 4. **`requirements.txt`** - All project dependencies
 5. **`.env.example`** - Environment variable template
+6. **`docs/`** - Documentation folder
+   - `README.md` - Documentation index
+   - `SETUP.md` - Complete setup guide
 
 ---
 
 ## Getting Started
 
-### **Prerequisites**
-- Python 3.11 or higher
-- PostgreSQL 15+ (or Docker)
-- pip (Python package manager)
-
-### **Installation**
+### **Quick Start**
 
 ```bash
 # Navigate to api directory
 cd api
 
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate  # macOS/Linux
-# OR
-venv\Scripts\activate     # Windows
+source venv/bin/activate  # macOS/Linux (Windows: venv\Scripts\activate)
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Copy environment variables
+# Setup environment
 cp .env.example .env
 
-# Edit .env with your credentials
-```
-
----
-
-## Environment Configuration
-
-The project supports **4 environments**:
-
-| Environment | Purpose | Config File | Database |
-|-------------|---------|-------------|----------|
-| **local** | Local development | `.env.local` | `localhost:5432` |
-| **dev** | Development deployment | `.env.dev` | Supabase Dev |
-| **stg** | Staging/Testing | `.env.stg` | Supabase Staging |
-| **prod** | Production (Client) | `.env.prod` | Supabase Production |
-
-### **Setup Environment Files**
-
-**`.env.local`** (Local development)
-```env
-# Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/meishibridge
-
-# Security
-SECRET_KEY=dev-secret-key-change-this
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=10080
-
-# Supabase (for file storage)
-SUPABASE_URL=https://xxx.supabase.co
-SUPABASE_KEY=your-dev-supabase-key
-
-# CORS
-FRONTEND_URL=http://localhost:3000
-```
-
-**`.env.dev`** (Development deployment)
-```env
-# Database
-DATABASE_URL=postgresql://user:pass@db.supabase.co:5432/postgres
-
-# Security
-SECRET_KEY=dev-deployment-secret-key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=10080
-
-# Supabase
-SUPABASE_URL=https://xxx-dev.supabase.co
-SUPABASE_KEY=your-dev-supabase-key
-
-# CORS
-FRONTEND_URL=https://meishibridge-dev.vercel.app
-```
-
-**`.env.stg`** (Staging deployment)
-```env
-# Database
-DATABASE_URL=postgresql://user:pass@db-stg.supabase.co:5432/postgres
-
-# Security
-SECRET_KEY=staging-secret-key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=10080
-
-# Supabase
-SUPABASE_URL=https://xxx-stg.supabase.co
-SUPABASE_KEY=your-stg-supabase-key
-
-# CORS
-FRONTEND_URL=https://meishibridge-stg.vercel.app
-```
-
-**`.env.prod`** (Production for clients)
-```env
-# Database
-DATABASE_URL=postgresql://user:pass@db.supabase.co:5432/postgres
-
-# Security
-SECRET_KEY=<strong-production-secret-key>
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=10080
-
-# Supabase
-SUPABASE_URL=https://xxx.supabase.co
-SUPABASE_KEY=<prod-supabase-key>
-
-# CORS
-FRONTEND_URL=https://meishibridge.com
-```
-
-### **Run with Environment**
-
-```bash
-# Local development (uses .env.local automatically)
-uvicorn app.main:app --reload
-
-# Or specify environment file
-export $(cat .env.dev | xargs) && uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-
-### **Database Setup**
-
-**Option 1: Docker PostgreSQL (Recommended)**
-```bash
-# Start PostgreSQL in Docker
-docker run -d \
-  --name meishibridge-db \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=meishibridge \
-  -p 5432:5432 \
-  postgres:15-alpine
-```
-
-**Option 2: Local PostgreSQL**
-```bash
-# Install PostgreSQL
-# macOS: brew install postgresql@15
-# Ubuntu: sudo apt install postgresql-15
-
-# Create database
-createdb meishibridge
-```
-
-### **Run Migrations**
-
-```bash
-# Run database migrations
-alembic upgrade head
-```
-
-### **Start Development Server**
-
-```bash
-# Start FastAPI server with auto-reload
+# Start development server
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
-# API running at: http://localhost:8000
-# Swagger docs: http://localhost:8000/docs
-# ReDoc: http://localhost:8000/redoc
 ```
+
+Visit:
+- API: http://localhost:8000
+- Swagger Docs: http://localhost:8000/docs
+- Health Check: http://localhost:8000/health
+
+### **Detailed Setup Guide**
+
+For complete setup instructions including:
+- Prerequisites and installation
+- Environment configuration (local/dev/stg/prod)
+- Database setup (Docker/Local PostgreSQL)
+- Database migrations
+- Troubleshooting
+
+See: **[docs/setup/installation.md](docs/setup/installation.md)**
+
+### **Full Documentation**
+
+Complete documentation organized by topic:
+- **[docs/](docs/)** - Documentation index
+- **[docs/setup/](docs/setup/)** - Installation and configuration
+- **[docs/development/](docs/development/)** - Development guides
+- **[docs/api-reference/](docs/api-reference/)** - API endpoints
+- **[docs/architecture/](docs/architecture/)** - System architecture
+- **[docs/guides/](docs/guides/)** - How-to tutorials
+- **[/infra/](../infra/)** - Deployment & infrastructure (separate folder)
 
 ---
 

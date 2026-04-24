@@ -26,4 +26,4 @@ supabase==2.3.1
 # Testing
 pytest==7.4.4
 pytest-cov==4.1.0
-httpx==0.26.0
+httpx==0.25.2

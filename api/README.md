@@ -341,25 +341,37 @@ api/
 
 ## Getting Started
 
-### **Quick Start**
+### **Quick Start (Docker - Recommended)**
 
 ```bash
-# Navigate to api directory
 cd api
-
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # macOS/Linux (Windows: venv\Scripts\activate)
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Setup environment
-cp .env.example .env
-
-# Start development server
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+cp .env.example .env.local
+docker compose up -d
 ```
+
+**Important:** Use `db` as DATABASE_URL hostname in `.env.local`
+
+### **Quick Start (Virtual Environment)**
+
+```bash
+cd api
+python -m venv venv
+source venv/bin/activate              # macOS/Linux (Windows: venv\Scripts\activate)
+pip install -r requirements.txt
+cp .env.example .env.local
+
+# Start PostgreSQL container
+docker run -d --name meishibridge-db \
+  -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=meishibridge -p 5432:5432 postgres:15-alpine
+
+# Start server
+uvicorn app.main:app --reload
+```
+
+**Important:** Use `localhost` as DATABASE_URL hostname in `.env.local`
+
+### **Verify Installation**
 
 Visit:
 - API: http://localhost:8000

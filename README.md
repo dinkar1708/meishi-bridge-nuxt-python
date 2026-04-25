@@ -222,3 +222,11 @@ If this project helped you, please give it a star!
 **[Star this repository](https://github.com/dinkar1708/meishi-bridge-nuxt-python)** • **[Report Bug](https://github.com/dinkar1708/meishi-bridge-nuxt-python/issues)** • **[Request Feature](https://github.com/dinkar1708/meishi-bridge-nuxt-python/issues)**
 
 </div>
+
+## Web DEMO
+
+<img width="1948" height="1078" alt="Screenshot 2026-04-25 at 17 46 26" src="https://github.com/user-attachments/assets/7c404dc0-433f-4c9b-a6b9-85b8308c9b5c" />
+
+<img width="1838" height="1067" alt="Screenshot 2026-04-25 at 17 46 43" src="https://github.com/user-attachments/assets/c49b62a1-c463-4e8e-accd-41b8acb99fd0" />
+<img width="1864" height="1090" alt="Screenshot 2026-04-25 at 17 46 35" src="https://github.com/user-attachments/assets/3424e5d1-3c7d-4041-9516-53fdb3691e26" />
+

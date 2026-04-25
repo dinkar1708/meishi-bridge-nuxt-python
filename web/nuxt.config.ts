@@ -32,7 +32,8 @@ export default defineNuxtConfig({
     defaultLocale: 'ja',
     lazy: true,
     langDir: 'locales/',
-    strategy: 'no_prefix'
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false  // Disable browser language detection to use default
   },
 
   // App configuration

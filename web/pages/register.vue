@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <NuxtLayout name="default">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
       <!-- Header -->
       <div class="text-center">
@@ -134,31 +135,16 @@
           </p>
         </div>
 
-        <!-- Language Switcher -->
-        <div class="mt-4 text-center">
-          <select
-            :value="locale"
-            @change="changeLanguage"
-            class="text-sm border border-gray-300 rounded px-2 py-1"
-          >
-            <option value="ja">日本語</option>
-            <option value="en">English</option>
-          </select>
-        </div>
       </div>
     </div>
-  </div>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-const { t, locale, setLocale } = useI18n()
+const { t } = useI18n()
 const { register } = useAuth()
 const router = useRouter()
-
-const changeLanguage = (event: Event) => {
-  const target = event.target as HTMLSelectElement
-  setLocale(target.value)
-}
 
 // Form state
 const form = reactive({

@@ -11,6 +11,8 @@ docs/
 ├── README.md                    # This file - Documentation index
 ├── setup/                       # Installation and setup
 ├── development/                 # Development guides
+├── testing/                     # Testing guide and best practices
+├── database/                    # Database migrations and management
 ├── api-reference/              # API endpoints reference
 ├── architecture/               # System architecture
 └── guides/                     # Step-by-step tutorials
@@ -60,10 +62,25 @@ Learn how to develop with the API
 - Project structure
 - Creating endpoints
 - Database models
-- Testing guide
 - Coding standards
 
-### **3. [api-reference/](api-reference/)** - API Reference
+### **3. [testing/](testing/)** - Testing Guide
+Complete testing documentation
+- Running tests (Docker method)
+- Test structure and organization
+- Writing tests
+- Coverage reports
+- Test best practices
+- CI/CD integration
+
+### **4. [database/](database/)** - Database Management
+Database operations and migrations
+- Alembic migrations guide
+- Creating migrations
+- Applying migrations
+- Troubleshooting database issues
+
+### **5. [api-reference/](api-reference/)** - API Reference
 Complete API documentation
 - Authentication endpoints
 - Business card endpoints
@@ -71,7 +88,7 @@ Complete API documentation
 - Request/response schemas
 - Error responses
 
-### **4. [architecture/](architecture/)** - Architecture
+### **6. [architecture/](architecture/)** - Architecture
 System design and patterns
 - Architecture overview
 - Tech stack decisions
@@ -79,7 +96,7 @@ System design and patterns
 - Component design
 - Security architecture
 
-### **5. [guides/](guides/)** - How-To Guides
+### **7. [guides/](guides/)** - How-To Guides
 Step-by-step tutorials
 - Quick start guide
 - Creating your first endpoint
@@ -88,7 +105,7 @@ Step-by-step tutorials
 - PDF generation
 - Common troubleshooting
 
-### **6. Deployment** → See [/infra/](../../infra/)
+### **8. Deployment** → See [/infra/](../../infra/)
 All deployment, Docker, CI/CD, and infrastructure documentation is maintained in the `/infra/` folder at the project root.
 
 ---
@@ -103,6 +120,12 @@ All deployment, Docker, CI/CD, and infrastructure documentation is maintained in
 
 ### **I want to add a new feature**
 → [development/](development/)
+
+### **I want to run tests**
+→ [testing/](testing/)
+
+### **I need to create database migrations**
+→ [database/](database/)
 
 ### **I want to deploy to production**
 → [/infra/](../../infra/) (Deployment docs are in infra folder)
@@ -130,8 +153,10 @@ We welcome documentation improvements! When adding new documentation:
 
 | Section | Status | Files |
 |---------|--------|-------|
-| **Setup** | ✅ Ready | 1 guide available |
+| **Setup** | ✅ Ready | Installation guide |
 | **Development** | 🚧 Coming Soon | Planned |
+| **Testing** | ✅ Ready | Testing guide with Docker commands |
+| **Database** | ✅ Ready | Migrations guide |
 | **API Reference** | 🚧 Coming Soon | Planned |
 | **Architecture** | 🚧 Coming Soon | Planned |
 | **Guides** | 🚧 Coming Soon | Planned |

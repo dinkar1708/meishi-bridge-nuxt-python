@@ -394,6 +394,8 @@ See: **[docs/setup/installation.md](docs/setup/installation.md)**
 Complete documentation organized by topic:
 - **[docs/](docs/)** - Documentation index
 - **[docs/setup/](docs/setup/)** - Installation and configuration
+- **[docs/testing/](docs/testing/)** - Testing guide (Docker method)
+- **[docs/database/](docs/database/)** - Database migrations
 - **[docs/development/](docs/development/)** - Development guides
 - **[docs/api-reference/](docs/api-reference/)** - API endpoints
 - **[docs/architecture/](docs/architecture/)** - System architecture
@@ -436,41 +438,48 @@ Complete documentation organized by topic:
 
 ## Testing & Code Coverage
 
-### **Run Tests**
+### **Run Tests (Docker Method - Recommended)**
 
 ```bash
 # Run all tests
-pytest
+docker compose exec api pytest
 
 # Run with verbose output
-pytest -v
+docker compose exec api pytest -v
+
+# Run with coverage report
+docker compose exec api pytest --cov=app --cov-report=term-missing
 
 # Run specific test file
-pytest tests/test_cards.py -v
+docker compose exec api pytest tests/test_auth.py -v
 
 # Run specific test function
-pytest tests/test_auth.py::test_register_success -v
-
-# Run tests in parallel (faster)
-pytest -n auto
+docker compose exec api pytest tests/test_auth.py::TestUserLogin::test_login_success
 ```
 
-### **Code Coverage**
+### **Quick Test Commands**
 
 ```bash
-# Run tests with coverage report
-pytest --cov=app --cov-report=html --cov-report=term
+# Run all tests
+docker compose exec api pytest
 
-# Generate coverage report only
-pytest --cov=app --cov-report=html
+# Run with detailed coverage
+docker compose exec api pytest --cov=app --cov-report=html
 
 # View HTML coverage report
 open htmlcov/index.html  # macOS
-start htmlcov/index.html  # Windows
-
-# Coverage with missing lines
-pytest --cov=app --cov-report=term-missing
 ```
+
+### **Detailed Testing Guide**
+
+For complete testing documentation including:
+- All test commands (filtering, coverage, debugging)
+- Test structure and organization
+- Writing tests and best practices
+- Using fixtures and test data
+- CI/CD integration
+
+See: **[docs/testing/README.md](docs/testing/README.md)**
 
 ### **Coverage Goals**
 

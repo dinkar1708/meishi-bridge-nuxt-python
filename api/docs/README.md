@@ -26,7 +26,7 @@ Note: Deployment documentation is in /infra/ (not here)
 
 ### **Getting Started**
 
-#### **[setup/installation.md](setup/installation.md)** - Complete Setup Guide ⭐
+#### **[setup/installation.md](setup/installation.md)** - Complete Setup Guide
 **Start here!** Complete step-by-step guide for setting up the API locally:
 - Prerequisites and installation
 - Virtual environment setup
@@ -105,7 +105,7 @@ Step-by-step tutorials
 - PDF generation
 - Common troubleshooting
 
-### **8. Deployment** → See [/infra/](../../infra/)
+### **8. Deployment** -> See [/infra/](../../infra/)
 All deployment, Docker, CI/CD, and infrastructure documentation is maintained in the `/infra/` folder at the project root.
 
 ---
@@ -113,28 +113,28 @@ All deployment, Docker, CI/CD, and infrastructure documentation is maintained in
 ## By Use Case
 
 ### **I want to get started quickly**
-→ [setup/installation.md](setup/installation.md)
+-> [setup/installation.md](setup/installation.md)
 
 ### **I want to understand the codebase**
-→ [architecture/](architecture/)
+-> [architecture/](architecture/)
 
 ### **I want to add a new feature**
-→ [development/](development/)
+-> [development/](development/)
 
 ### **I want to run tests**
-→ [testing/](testing/)
+-> [testing/](testing/)
 
 ### **I need to create database migrations**
-→ [database/](database/)
+-> [database/](database/)
 
 ### **I want to deploy to production**
-→ [/infra/](../../infra/) (Deployment docs are in infra folder)
+-> [/infra/](../../infra/) (Deployment docs are in infra folder)
 
 ### **I want to see all API endpoints**
-→ [api-reference/](api-reference/)
+-> [api-reference/](api-reference/)
 
 ### **I need help with a specific task**
-→ [guides/](guides/)
+-> [guides/](guides/)
 
 ---
 
@@ -153,14 +153,14 @@ We welcome documentation improvements! When adding new documentation:
 
 | Section | Status | Files |
 |---------|--------|-------|
-| **Setup** | ✅ Ready | Installation guide |
-| **Development** | 🚧 Coming Soon | Planned |
-| **Testing** | ✅ Ready | Testing guide with Docker commands |
-| **Database** | ✅ Ready | Migrations guide |
-| **API Reference** | 🚧 Coming Soon | Planned |
-| **Architecture** | 🚧 Coming Soon | Planned |
-| **Guides** | 🚧 Coming Soon | Planned |
-| **Deployment** | → See `/infra/` | Maintained separately |
+| **Setup** | Ready | Installation guide |
+| **Development** | Coming Soon | Planned |
+| **Testing** | Ready | Testing guide with Docker commands |
+| **Database** | Ready | Migrations guide |
+| **API Reference** | Coming Soon | Planned |
+| **Architecture** | Partial | Service layer organization guide |
+| **Guides** | Coming Soon | Planned |
+| **Deployment** | See /infra/ | Maintained separately |
 
 ---
 

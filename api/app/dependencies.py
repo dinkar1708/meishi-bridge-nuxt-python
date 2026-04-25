@@ -68,17 +68,3 @@ def get_current_user(
         )
 
     return user
-
-
-def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
-) -> User:
-    """Get current active user (alias for get_current_user).
-
-    Args:
-        current_user: Current authenticated user
-
-    Returns:
-        User: Current active user
-    """
-    return current_user

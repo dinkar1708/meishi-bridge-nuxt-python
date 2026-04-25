@@ -1,6 +1,10 @@
 # Testing Guide - MeishiBridge API
 
-Comprehensive guide for running and writing tests for the FastAPI backend.
+Complete guide for running and writing tests for the FastAPI backend.
+
+**Current Coverage: 97%** (204 statements, 6 missed, 28 tests passing)
+
+**Detailed Coverage Report:** [COVERAGE.md](./COVERAGE.md)
 
 ---
 
@@ -30,22 +34,36 @@ docker compose exec api pytest tests/test_auth.py::TestUserLogin::test_login_suc
 
 ## Test Structure
 
+Tests are organized to mirror the app structure for easy navigation:
+
 ```
-api/
-├── tests/
+tests/
+├── __init__.py
+├── conftest.py                  # Shared fixtures and configuration
+├── test_main.py                 # Main app endpoints (root, health)
+│
+├── routers/                     # Router/endpoint tests
 │   ├── __init__.py
-│   ├── conftest.py              # Pytest configuration and fixtures
-│   ├── test_auth.py             # Authentication endpoint tests
-│   └── test_*.py                # Other test files
+│   └── test_auth.py            # Authentication endpoints (19 tests)
+│
+├── services/                    # Service layer tests
+│   └── __init__.py             # (Future service tests)
+│
+├── models/                      # Model tests
+│   ├── __init__.py
+│   └── test_user.py            # User model tests (3 tests)
+│
+└── utils/                       # Utility tests
+    ├── __init__.py
+    └── test_security.py        # Security utilities (4 tests)
 ```
 
 ### Test Organization
 
-Tests are organized by feature/module:
-
-- **`conftest.py`**: Shared fixtures and test configuration
-- **`test_auth.py`**: User authentication tests (registration, login, current user)
-- **`test_*.py`**: Additional feature tests (to be added)
+- **28 total tests** across 4 test files
+- **97% coverage** (204 statements, 6 missed)
+- Tests mirror app structure for easy maintenance
+- Each module has its own test folder
 
 ---
 
@@ -72,8 +90,17 @@ docker compose exec api pytest --lf
 
 ### Coverage Commands
 
+**Primary Coverage Command:**
 ```bash
-# Run tests with coverage report
+docker compose exec api pytest --cov=app --cov-report=term
+```
+
+**All Coverage Commands:**
+```bash
+# Run tests with coverage report (recommended)
+docker compose exec api pytest --cov=app --cov-report=term
+
+# Run with missing lines shown
 docker compose exec api pytest --cov=app --cov-report=term-missing
 
 # Generate HTML coverage report
@@ -86,6 +113,46 @@ open htmlcov/index.html  # macOS
 # Run coverage with minimum threshold (e.g., 90%)
 docker compose exec api pytest --cov=app --cov-fail-under=90
 ```
+
+### Current Coverage Results
+
+**Command:**
+```bash
+docker compose exec api pytest --cov=app --cov-report=term
+```
+
+**Output:**
+```
+28 passed, 1 warning in 4.24s
+
+---------- coverage: platform linux, python 3.11.15-final-0 ----------
+Name                           Stmts   Miss  Cover
+--------------------------------------------------
+app/__init__.py                    1      0   100%
+app/config.py                     15      0   100%
+app/database.py                   11      4    64%
+app/dependencies.py               29      0   100%
+app/main.py                       12      0   100%
+app/models/__init__.py             2      0   100%
+app/models/user.py                17      0   100%
+app/routers/__init__.py            2      0   100%
+app/routers/auth.py               19      0   100%
+app/schemas/__init__.py            3      0   100%
+app/schemas/auth.py               11      0   100%
+app/schemas/user.py               20      0   100%
+app/services/__init__.py           2      0   100%
+app/services/auth_service.py      40      2    95%
+app/utils/__init__.py              2      0   100%
+app/utils/security.py             18      0   100%
+--------------------------------------------------
+TOTAL                            204      6    97%
+```
+
+**Summary:**
+- Total Tests: 28 passed
+- Total Statements: 204
+- Missed Statements: 6
+- Coverage: **97%**
 
 ### Filtering Tests
 
@@ -350,28 +417,28 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 ### Current Test Coverage
 
 **TestUserRegistration (6 tests)**
-- ✅ `test_register_success` - Successful user registration
-- ✅ `test_register_duplicate_email` - Duplicate email rejection
-- ✅ `test_register_duplicate_username` - Duplicate username rejection
-- ✅ `test_register_invalid_email` - Email format validation
-- ✅ `test_register_short_password` - Password length validation
-- ✅ `test_register_missing_fields` - Required fields validation
+-  `test_register_success` - Successful user registration
+-  `test_register_duplicate_email` - Duplicate email rejection
+-  `test_register_duplicate_username` - Duplicate username rejection
+-  `test_register_invalid_email` - Email format validation
+-  `test_register_short_password` - Password length validation
+-  `test_register_missing_fields` - Required fields validation
 
 **TestUserLogin (4 tests)**
-- ✅ `test_login_success` - Successful login with JWT token
-- ✅ `test_login_invalid_email` - Non-existent email rejection
-- ✅ `test_login_wrong_password` - Wrong password rejection
-- ✅ `test_login_missing_fields` - Required fields validation
+-  `test_login_success` - Successful login with JWT token
+-  `test_login_invalid_email` - Non-existent email rejection
+-  `test_login_wrong_password` - Wrong password rejection
+-  `test_login_missing_fields` - Required fields validation
 
 **TestGetCurrentUser (4 tests)**
-- ✅ `test_get_current_user_success` - Valid token returns user
-- ✅ `test_get_current_user_no_token` - Missing token returns 401
-- ✅ `test_get_current_user_invalid_token` - Invalid token returns 401
-- ✅ `test_get_current_user_malformed_header` - Malformed header returns 401
+-  `test_get_current_user_success` - Valid token returns user
+-  `test_get_current_user_no_token` - Missing token returns 401
+-  `test_get_current_user_invalid_token` - Invalid token returns 401
+-  `test_get_current_user_malformed_header` - Malformed header returns 401
 
 **TestAuthenticationFlow (2 tests)**
-- ✅ `test_full_auth_flow` - Complete registration → login → get user
-- ✅ `test_multiple_users` - Multiple users independent authentication
+-  `test_full_auth_flow` - Complete registration -> login -> get user
+-  `test_multiple_users` - Multiple users independent authentication
 
 **Total: 16 tests, 93% coverage**
 

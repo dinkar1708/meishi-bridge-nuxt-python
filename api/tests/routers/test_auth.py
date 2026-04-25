@@ -181,6 +181,80 @@ class TestGetCurrentUser:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    def test_get_current_user_token_without_sub(self, client, test_user_data):
+        """Test token without 'sub' field (malicious token)."""
+        from jose import jwt
+        from app.config import settings
+
+        # Register user first
+        client.post("/api/v1/auth/register", json=test_user_data)
+
+        # Create malformed token without 'sub' field
+        malicious_payload = {"email": test_user_data["email"]}
+        malicious_token = jwt.encode(
+            malicious_payload,
+            settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM
+        )
+
+        response = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {malicious_token}"}
+        )
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert "Could not validate credentials" in response.json()["detail"]
+
+    def test_get_current_user_deleted_user(self, client, test_user_data, db_session):
+        """Test with valid token but user deleted from database."""
+        # Register and login
+        client.post("/api/v1/auth/register", json=test_user_data)
+        login_response = client.post("/api/v1/auth/login", json={
+            "email": test_user_data["email"],
+            "password": test_user_data["password"]
+        })
+        token = login_response.json()["access_token"]
+
+        # Delete user from database (simulates admin deletion)
+        from app.models.user import User
+        user = db_session.query(User).filter_by(email=test_user_data["email"]).first()
+        db_session.delete(user)
+        db_session.commit()
+
+        # Try to access with valid token but deleted user
+        response = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert "Could not validate credentials" in response.json()["detail"]
+
+    def test_get_current_user_inactive_user(self, client, test_user_data, db_session):
+        """Test with valid token but inactive user account."""
+        # Register and login
+        client.post("/api/v1/auth/register", json=test_user_data)
+        login_response = client.post("/api/v1/auth/login", json={
+            "email": test_user_data["email"],
+            "password": test_user_data["password"]
+        })
+        token = login_response.json()["access_token"]
+
+        # Deactivate user account (simulates admin suspension)
+        from app.models.user import User
+        user = db_session.query(User).filter_by(email=test_user_data["email"]).first()
+        user.is_active = False
+        db_session.commit()
+
+        # Try to access with inactive account
+        response = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert "inactive" in response.json()["detail"].lower()
+
 
 class TestAuthenticationFlow:
     """Test complete authentication flow."""

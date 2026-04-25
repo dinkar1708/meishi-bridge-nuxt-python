@@ -23,9 +23,9 @@ The API backend provides:
 
 - **[Python 3.11](https://www.python.org/)** - Programming language
 - **[FastAPI](https://fastapi.tiangolo.com/)** - Web framework
-- **[SQLAlchemy](https://www.sqlalchemy.org/)** - ORM
+- **[SQLAlchemy](https://www.sqlalchemy.org/)** - ORM (Object-Relational Mapping)
 - **[Pydantic](https://docs.pydantic.dev/)** - Data validation
-- **[Alembic](https://alembic.sqlalchemy.org/)** - Database migrations
+- **[Alembic](https://alembic.sqlalchemy.org/)** - Database migrations (version control for database schema)
 - **[PostgreSQL](https://www.postgresql.org/)** - Database
 - **[python-jose](https://github.com/mpdavis/python-jose)** - JWT tokens
 - **[passlib](https://passlib.readthedocs.io/)** - Password hashing
@@ -713,8 +713,16 @@ Use [UptimeRobot](https://uptimerobot.com) to ping `/health` every 5 minutes
 
 ### **Database Migrations**
 
+**Alembic** is a database migration tool for SQLAlchemy. It tracks and manages changes to your database schema over time (like Git for databases).
+
+**Why use Alembic?**
+- Version control for database schema
+- Auto-generate migrations from model changes
+- Easy rollback to previous versions
+- Team collaboration on database changes
+
 ```bash
-# Create new migration
+# Create new migration (auto-detects model changes)
 alembic revision --autogenerate -m "description"
 
 # Apply migrations
@@ -722,7 +730,12 @@ alembic upgrade head
 
 # Rollback one version
 alembic downgrade -1
+
+# Check current version
+alembic current
 ```
+
+**See detailed guide:** [docs/database/migrations.md](docs/database/migrations.md)
 
 ### **Add New Endpoint**
 

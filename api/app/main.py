@@ -4,6 +4,8 @@ FastAPI Application Entry Point
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routers import auth
+
 app = FastAPI(
     title="MeishiBridge API",
     description="REST API for Japanese Business Card Management",
@@ -20,6 +22,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(auth.router)
 
 
 @app.get("/", tags=["Health"])

@@ -58,6 +58,11 @@ docker compose exec api bash
 
 # Run tests
 docker compose exec api pytest
+
+# Database migrations
+docker compose exec api alembic upgrade head        # Apply migrations
+docker compose exec api alembic revision --autogenerate -m "Description"  # Create migration
+docker compose exec api alembic current             # Check status
 ```
 
 ---
@@ -89,6 +94,9 @@ docker run -d \
   -e POSTGRES_DB=meishibridge \
   -p 5432:5432 \
   postgres:15-alpine
+
+# Run database migrations
+alembic upgrade head
 
 # Start development server
 uvicorn app.main:app --reload

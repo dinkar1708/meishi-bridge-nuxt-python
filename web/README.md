@@ -29,6 +29,90 @@ The web frontend provides the primary user interface for MeishiBridge, featuring
 
 ---
 
+## Project Setup
+
+This project was set up **manually** for full control over structure and dependencies. However, you can also use the Nuxt CLI to generate a starter project.
+
+### **Option 1: Using Nuxt CLI (Recommended for New Projects)**
+
+```bash
+# Create new Nuxt project with CLI
+npx nuxi init my-project
+# OR
+npm create nuxt@latest my-project
+
+# Follow prompts to select:
+# - Package manager: npm
+# - UI framework: None (we'll add Tailwind manually)
+# - Modules: Select i18n, tailwindcss, pinia
+
+cd my-project
+npm install
+npm run dev
+```
+
+### **Option 2: Manual Setup (What We Did)**
+
+This gives you more control over the exact configuration:
+
+```bash
+# 1. Create project structure
+mkdir -p web/assets/css web/components/{ui,card,editor} web/composables web/layouts web/locales web/middleware web/pages/editor web/plugins web/public web/stores
+
+# 2. Create configuration files manually:
+# - package.json (dependencies)
+# - nuxt.config.ts (Nuxt & i18n configuration)
+# - tsconfig.json (TypeScript configuration)
+# - tailwind.config.js (Tailwind CSS configuration)
+# - .gitignore (Git ignore file)
+# - .env.local (Environment variables)
+
+# 3. Install dependencies
+cd web
+npm install
+
+# 4. Install additional dependencies
+npm install -D vue-tsc
+
+# 5. Start development server
+npm run dev
+```
+
+**Why Manual Setup?**
+- Full control over dependencies and versions
+- Custom project structure from the start
+- No unused files or boilerplate
+- Learn how Nuxt works internally
+
+### **Key Configuration Files Created**
+
+1. **package.json** - Dependencies and scripts
+2. **nuxt.config.ts** - Nuxt configuration with i18n and Tailwind modules
+3. **tailwind.config.js** - Tailwind CSS theme configuration
+4. **tsconfig.json** - TypeScript configuration
+5. **.env.local** - Environment variables for local development
+6. **app.vue** - Main app component
+7. **assets/css/main.css** - Tailwind CSS and custom styles
+
+### **Pages Created**
+
+- `pages/index.vue` - Home page (simple "Hello" landing page)
+- `pages/login.vue` - Login page with form validation and i18n
+- `pages/register.vue` - Registration page with form validation
+- `pages/dashboard.vue` - Dashboard placeholder
+
+### **Composables Created**
+
+- `composables/useApi.ts` - API client for backend communication
+- `composables/useAuth.ts` - Authentication state management
+
+### **Localization Files**
+
+- `locales/ja.json` - Japanese translations
+- `locales/en.json` - English translations
+
+---
+
 ## 📂 Project Structure
 
 ```

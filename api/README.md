@@ -339,6 +339,30 @@ api/
 
 ---
 
+## Test Accounts
+
+The application comes with pre-seeded test accounts for easy development/testing:
+
+| Email | Password | Username | Purpose |
+|-------|----------|----------|---------|
+| test@example.com | test123 | testuser | General testing |
+| admin@example.com | admin123 | admin | Admin testing |
+| demo@example.com | demo123 | demouser | Demo/presentation |
+
+**Create/Reset Test Accounts:**
+```bash
+# Using Docker
+docker exec meishibridge-api python seeds/seed_users.py
+
+# Or locally
+source venv/bin/activate
+python seeds/seed_users.py
+```
+
+See [docs/TEST-ACCOUNTS.md](docs/TEST-ACCOUNTS.md) for more details.
+
+---
+
 ## Getting Started
 
 ### **Quick Start (Docker - Recommended)**

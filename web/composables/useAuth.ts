@@ -18,7 +18,9 @@ export const useAuth = () => {
   // Login
   const login = async (email: string, password: string) => {
     try {
+      console.log('Attempting login for:', email)
       const response = await api.auth.login(email, password)
+      console.log('Login response:', response)
       token.value = response.access_token
 
       // Store token in localStorage
@@ -32,9 +34,11 @@ export const useAuth = () => {
       return { success: true }
     } catch (error: any) {
       console.error('Login error:', error)
+      const errorMessage = error.data?.detail || error.message || 'Login failed'
+      console.error('Error message:', errorMessage)
       return {
         success: false,
-        error: error.data?.detail || 'Login failed'
+        error: errorMessage
       }
     }
   }
@@ -47,25 +51,36 @@ export const useAuth = () => {
     full_name?: string
   }) => {
     try {
-      await api.auth.register(data)
+      console.log('useAuth.register called with:', data)
+      const response = await api.auth.register(data)
+      console.log('Registration API response:', response)
 
       // Auto-login after registration
+      console.log('Auto-login after registration...')
       return await login(data.email, data.password)
     } catch (error: any) {
       console.error('Registration error:', error)
+      console.error('Registration error details:', error.data)
+      const errorMessage = error.data?.detail || error.message || 'Registration failed'
+      console.error('Error message:', errorMessage)
       return {
         success: false,
-        error: error.data?.detail || 'Registration failed'
+        error: errorMessage
       }
     }
   }
 
   // Fetch current user
   const fetchUser = async () => {
-    if (!token.value) return
+    if (!token.value) {
+      console.log('fetchUser: No token, skipping')
+      return
+    }
 
     try {
+      console.log('fetchUser: Fetching user with token:', token.value.substring(0, 20) + '...')
       const userData = await api.auth.getCurrentUser(token.value)
+      console.log('fetchUser: User data received:', userData)
       user.value = userData
     } catch (error) {
       console.error('Fetch user error:', error)

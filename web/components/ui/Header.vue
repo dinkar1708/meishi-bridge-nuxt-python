@@ -14,11 +14,18 @@
 
         <!-- Navigation & Language Switcher -->
         <div class="flex items-center space-x-4">
-          <!-- Navigation Links (optional) -->
-          <div class="hidden md:flex items-center space-x-4">
-            <NuxtLink to="/" class="text-gray-700 hover:text-primary-600 px-3 py-2">
-              {{ t('nav.home') }}
-            </NuxtLink>
+          <!-- User Greeting (if logged in) -->
+          <div v-if="user" class="hidden md:flex items-center space-x-4">
+            <span class="text-gray-700">
+              Hello, {{ user.username }}!
+            </span>
+            <button @click="handleLogout" class="text-gray-700 hover:text-primary-600 px-3 py-2">
+              {{ t('common.logout') }}
+            </button>
+          </div>
+
+          <!-- Navigation Links (if not logged in) -->
+          <div v-else class="hidden md:flex items-center space-x-4">
             <NuxtLink to="/login" class="text-gray-700 hover:text-primary-600 px-3 py-2">
               {{ t('common.login') }}
             </NuxtLink>
@@ -46,6 +53,7 @@
 
 <script setup lang="ts">
 const { t, locale, setLocale } = useI18n()
+const { user, logout } = useAuth()
 
 // Use a ref for the select value
 const selectedLocale = ref(locale.value)
@@ -59,6 +67,10 @@ const changeLanguage = () => {
 
   // Immediately reload the page
   location.reload()
+}
+
+const handleLogout = () => {
+  logout()
 }
 
 // On mount, restore saved locale

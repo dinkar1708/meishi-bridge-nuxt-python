@@ -21,7 +21,13 @@ export const useApi = () => {
       return response
     } catch (error: any) {
       console.error('API Error:', error)
-      throw error
+      console.error('API Error details:', error.data)
+      // Re-throw with more details
+      throw {
+        message: error.message,
+        data: error.data,
+        statusCode: error.statusCode
+      }
     }
   }
 

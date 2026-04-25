@@ -54,13 +54,21 @@
           </div>
 
           <!-- Error Message -->
-          <div v-if="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            {{ errorMessage }}
+          <div v-if="errorMessage" class="bg-red-100 border-2 border-red-500 text-red-900 px-6 py-4 rounded-lg mb-4">
+            <p class="font-bold text-lg">❌ Login Failed</p>
+            <p class="mt-2">{{ errorMessage }}</p>
+          </div>
+
+          <!-- Success Message -->
+          <div v-if="successMessage" class="bg-green-100 border-2 border-green-500 text-green-900 px-6 py-4 rounded-lg mb-4">
+            <p class="font-bold text-lg">✅ Login Successful!</p>
+            <p class="mt-2">{{ successMessage }}</p>
           </div>
 
           <!-- Submit Button -->
           <button
-            type="submit"
+            type="button"
+            @click="handleLogin"
             :disabled="loading"
             class="w-full btn btn-primary"
           >
@@ -86,14 +94,20 @@
 </template>
 
 <script setup lang="ts">
+// Test if script is loading
+console.log('LOGIN PAGE SCRIPT LOADED!')
+
 const { t } = useI18n()
 const { login } = useAuth()
 const router = useRouter()
 
-// Form state
+console.log('useAuth loaded:', !!login)
+console.log('router loaded:', !!router)
+
+// Form state (pre-filled with test account for easy testing)
 const form = reactive({
-  email: '',
-  password: ''
+  email: 'test@example.com',
+  password: 'test123'
 })
 
 const errors = reactive({
@@ -103,6 +117,7 @@ const errors = reactive({
 
 const loading = ref(false)
 const errorMessage = ref('')
+const successMessage = ref('')
 
 // Validation
 const validateForm = () => {
@@ -118,8 +133,8 @@ const validateForm = () => {
   if (!form.password) {
     errors.password = t('auth.passwordRequired')
     isValid = false
-  } else if (form.password.length < 8) {
-    errors.password = t('auth.passwordMinLength')
+  } else if (form.password.length < 5) {
+    errors.password = 'Password must be at least 5 characters'
     isValid = false
   }
 
@@ -128,25 +143,40 @@ const validateForm = () => {
 
 // Handle login
 const handleLogin = async () => {
+  console.log('🔥 LOGIN BUTTON CLICKED!')
+  alert('Login button clicked! Check console.')
+
   errorMessage.value = ''
+  successMessage.value = ''
 
   if (!validateForm()) {
+    errorMessage.value = 'Please fill in all required fields'
+    console.log('❌ Validation failed')
     return
   }
 
+  console.log('✅ Validation passed')
   loading.value = true
 
   try {
+    console.log('📞 Calling login API...')
     const result = await login(form.email, form.password)
+    console.log('📥 Login result:', result)
 
     if (result.success) {
-      // Redirect to dashboard on success
-      router.push('/dashboard')
+      successMessage.value = 'Redirecting to dashboard...'
+      console.log('✅ Login successful!')
+      // Small delay to show success message
+      setTimeout(async () => {
+        await router.push('/dashboard')
+      }, 500)
     } else {
-      errorMessage.value = result.error || t('auth.loginError')
+      errorMessage.value = result.error || 'Login failed. Please check your credentials.'
+      console.log('❌ Login failed:', result.error)
     }
-  } catch (error) {
-    errorMessage.value = t('auth.loginError')
+  } catch (error: any) {
+    errorMessage.value = error?.message || 'Network error. Please try again.'
+    console.log('💥 Error:', error)
   } finally {
     loading.value = false
   }

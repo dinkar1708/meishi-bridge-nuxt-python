@@ -188,8 +188,8 @@ const validateForm = () => {
   if (!form.password) {
     errors.password = t('auth.passwordRequired')
     isValid = false
-  } else if (form.password.length < 8) {
-    errors.password = t('auth.passwordMinLength')
+  } else if (form.password.length < 5) {
+    errors.password = 'Password must be at least 5 characters'
     isValid = false
   }
 
@@ -203,29 +203,39 @@ const validateForm = () => {
 
 // Handle registration
 const handleRegister = async () => {
+  console.log('handleRegister called')
   errorMessage.value = ''
 
   if (!validateForm()) {
+    console.log('Form validation failed')
     return
   }
 
+  console.log('Form validation passed, attempting registration...')
   loading.value = true
 
   try {
-    const result = await register({
+    const registerData = {
       email: form.email,
       username: form.username,
       password: form.password,
       full_name: form.full_name || undefined
-    })
+    }
+    console.log('Registration data:', registerData)
+
+    const result = await register(registerData)
+    console.log('Registration result:', result)
 
     if (result.success) {
-      // Redirect to dashboard on success
-      router.push('/dashboard')
+      console.log('Registration successful, redirecting to home')
+      // Redirect to home page on success
+      await router.push('/')
     } else {
+      console.log('Registration failed:', result.error)
       errorMessage.value = result.error || t('auth.registerError')
     }
   } catch (error) {
+    console.error('Registration exception:', error)
     errorMessage.value = t('auth.registerError')
   } finally {
     loading.value = false

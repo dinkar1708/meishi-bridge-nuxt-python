@@ -176,14 +176,12 @@ npm install
 
 ## 🌍 Environment Configuration
 
-The project supports **4 environments**:
+This frontend uses public runtime variables only:
 
-| Environment | Purpose | Config File | API URL |
-|-------------|---------|-------------|---------|
-| **local** | Local development | `.env.local` | `http://localhost:8000` |
-| **dev** | Development deployment | `.env.dev` | `https://api-dev.meishibridge.com` |
-| **stg** | Staging/Testing | `.env.stg` | `https://api-stg.meishibridge.com` |
-| **prod** | Production (Client) | `.env.prod` | `https://api.meishibridge.com` |
+| Environment | Config | API URL |
+|-------------|--------|---------|
+| **local** | `.env.local` | `http://localhost:8000/api/v1` |
+| **production (Vercel)** | Vercel Environment Variables | `https://meishi-api.vercel.app/api/v1` |
 
 ### **Setup Environment Files**
 
@@ -195,22 +193,10 @@ NUXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 NUXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-**`.env.dev`** (Development deployment)
+**Production (Vercel Project: `meishi-bridge`)**
 ```env
-NUXT_PUBLIC_API_URL=https://meishibridge-api-dev.onrender.com/api/v1
-NUXT_PUBLIC_APP_URL=https://meishibridge-dev.vercel.app
-```
-
-**`.env.stg`** (Staging deployment)
-```env
-NUXT_PUBLIC_API_URL=https://meishibridge-api-stg.onrender.com/api/v1
-NUXT_PUBLIC_APP_URL=https://meishibridge-stg.vercel.app
-```
-
-**`.env.prod`** (Production for clients)
-```env
-NUXT_PUBLIC_API_URL=https://meishibridge-api.onrender.com/api/v1
-NUXT_PUBLIC_APP_URL=https://meishibridge.com
+NUXT_PUBLIC_API_URL=https://meishi-api.vercel.app/api/v1
+NUXT_PUBLIC_APP_URL=https://meishi-bridge.vercel.app
 ```
 
 ### **Run with Environment**
@@ -220,10 +206,8 @@ NUXT_PUBLIC_APP_URL=https://meishibridge.com
 npm run dev
 # Uses .env.local automatically
 
-# Build for specific environment
-npm run build -- --dotenv .env.dev
-npm run build -- --dotenv .env.stg
-npm run build -- --dotenv .env.prod
+# Build production
+npm run build
 ```
 
 ---
@@ -484,27 +468,14 @@ export default defineNuxtConfig({
 
 ## 🚢 Deployment
 
-### **Vercel (Recommended - FREE)**
+Deployment documentation is centralized in `infra/README.md`.
 
-```bash
-# Install Vercel CLI
-npm i -g vercel
+- Frontend deployment target and Vercel settings:
+  - [infra/README.md#-option-1-manual-deployment-recommended](../infra/README.md#-option-1-manual-deployment-recommended)
+- Deployer assignment (which project owns what):
+  - [infra/README.md#-deployer-assignment-single-source-of-truth](../infra/README.md#-deployer-assignment-single-source-of-truth)
 
-# Login
-vercel login
-
-# Deploy
-vercel --prod
-```
-
-**Environment Variables (Vercel Dashboard):**
-- `NUXT_PUBLIC_API_URL`: Your backend API URL
-- `NUXT_PUBLIC_APP_URL`: Your app URL
-
-### **Other Options**
-- Netlify
-- Cloudflare Pages
-- AWS Amplify
+**Rule:** this frontend project must only use public `NUXT_PUBLIC_*` variables.
 
 ---
 

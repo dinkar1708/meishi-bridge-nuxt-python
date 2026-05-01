@@ -626,18 +626,17 @@ Add to `.github/workflows/api-ci.yml`:
 
 ## Dependencies
 
-### **Core**
+### **Core (Production)**
 ```
 fastapi==0.109.0
-uvicorn[standard]==0.27.0
+uvicorn==0.27.0
 python-dotenv==1.0.0
 ```
 
-### **Database**
+### **Database (Production)**
 ```
 sqlalchemy==2.0.25
 psycopg2-binary==2.9.9
-alembic==1.13.1
 ```
 
 ### **Validation**
@@ -661,12 +660,15 @@ qrcode[pil]==7.4.2
 supabase==2.3.1
 ```
 
-### **Testing**
+### **Development / Testing**
 ```
+alembic==1.13.1
 pytest==7.4.4
 pytest-cov==4.1.0
-httpx==0.26.0
+httpx==0.25.2
 ```
+
+Production dependencies are in `requirements.txt`; local dev/testing extras are in `requirements-dev.txt`.
 
 ---
 
@@ -721,24 +723,14 @@ Configured to allow:
 
 ## Deployment
 
-### **Render (FREE)**
+Deployment documentation is centralized in `infra/README.md`.
 
-1. Connect GitHub repository
-2. Create Web Service
-3. Configure:
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-4. Add environment variables
-5. Deploy
+- Backend deployment target and Vercel settings:
+  - [infra/README.md#-option-1-manual-deployment-recommended](../infra/README.md#-option-1-manual-deployment-recommended)
+- Deployer assignment (project ownership for web/api/db):
+  - [infra/README.md#-deployer-assignment-single-source-of-truth](../infra/README.md#-deployer-assignment-single-source-of-truth)
 
-**Keep-Alive (Prevent Cold Starts):**
-Use [UptimeRobot](https://uptimerobot.com) to ping `/health` every 5 minutes
-
-### **Other Options**
-- Railway
-- Fly.io
-- AWS Lambda (serverless)
-- DigitalOcean App Platform
+**Rule:** DB and secret variables (`DATABASE_URL`, `SECRET_KEY`, etc.) belong only to backend project `meishi-api`.
 
 ---
 

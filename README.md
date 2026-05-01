@@ -23,7 +23,7 @@ MeishiBridge is a **full-stack digital business card platform** designed for Jap
 **Why MeishiBridge?**
 - Built for Japanese meishi (名刺) culture
 - Modern tech stack (Nuxt 4, FastAPI, Flutter)
-- $0/month deployment (Vercel + Render + Supabase)
+- Split deployment: Vercel frontend + Vercel backend + Neon Postgres
 - AI-ready (Python backend for OCR, translation)
 - Multi-platform (Web + iOS + Android)
 
@@ -153,20 +153,12 @@ Each module has comprehensive test coverage:
 
 ## Deployment
 
-### **Production Deployment (FREE - $0/month)**
+Deployment docs are centralized in **[infra/README.md](infra/README.md)**.
 
-| Service | Hosts | Cost | Setup Guide |
-|---------|-------|------|-------------|
-| **Vercel** | Web Frontend (Nuxt 4) | $0 | [web/README.md#deployment](web/README.md#deployment) |
-| **Render** | API Backend (FastAPI) | $0 | [api/README.md#deployment](api/README.md#deployment) |
-| **Supabase** | PostgreSQL + File Storage | $0 | [infra/README.md#database-supabase](infra/README.md#database-supabase) |
-
-**Architecture:**
-```
-User → Vercel (Web) → Render (API) → Supabase (DB + Storage)
-```
-
-> **Complete deployment guide:** See **[Infrastructure README](infra/README.md)** for step-by-step instructions, CI/CD setup, and scaling options.
+- Deployment options and step-by-step:
+  - [infra/README.md#-deployment-options](infra/README.md#-deployment-options)
+- Deployer assignment for web/api/db:
+  - [infra/README.md#-deployer-assignment-single-source-of-truth](infra/README.md#-deployer-assignment-single-source-of-truth)
 
 ---
 
@@ -177,7 +169,7 @@ For detailed information about each component:
 | Documentation | Description |
 |-----------------|-------------|
 | **[Web Frontend Guide](web/README.md)** | Nuxt 4 setup, components, i18n, deployment to Vercel |
-| **[API Backend Guide](api/README.md)** | FastAPI setup, endpoints, database models, deployment to Render |
+| **[API Backend Guide](api/README.md)** | FastAPI setup, endpoints, database models, deployment to Vercel |
 | **[Mobile App Guide](mobile/README.md)** | Flutter setup, NFC, camera scanner, App Store deployment |
 | **[Infrastructure Guide](infra/README.md)** | Docker, Terraform, CI/CD, monitoring, cost estimation |
 

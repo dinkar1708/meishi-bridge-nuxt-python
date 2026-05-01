@@ -9,7 +9,7 @@ Docker, Terraform, CI/CD, and deployment configurations.
 ## 📋 Overview
 
 This directory contains infrastructure configurations:
-- **FREE Manual Deployment** (Vercel + Render + Supabase) - $0/month
+- **Manual Deployment** (Vercel + Vercel + Neon)
 - **GCP with Terraform** (Cloud Run + Cloud SQL) - ~$15/month
 - Docker Compose for local development
 - CI/CD pipelines (GitHub Actions)
@@ -18,50 +18,30 @@ This directory contains infrastructure configurations:
 
 ## 🚀 Deployment Options
 
-### **Option 1: FREE Manual Deployment** (Recommended for MVP)
+### **Option 1: Manual Deployment** (Recommended)
 
-**Stack:** Vercel + Render + Supabase = **$0/month**
+**Stack:** Vercel (Frontend) + Vercel (FastAPI Backend) + Neon (PostgreSQL)
 
-#### **Quick Setup (15 minutes):**
+Deployment docs are split by responsibility in `infra/deployment/`:
 
-**1. Frontend (Vercel):**
-```bash
-# Install Vercel CLI
-npm i -g vercel
+- Frontend deploy: [`deployment/frontend-vercel.md`](deployment/frontend-vercel.md)
+- Backend deploy: [`deployment/backend-vercel.md`](deployment/backend-vercel.md)
+- Database usage: [`deployment/database-neon.md`](deployment/database-neon.md)
+- Index and ownership rules: [`deployment/README.md`](deployment/README.md)
 
-# Deploy
-cd web
-vercel --prod
-```
-Or connect GitHub repo at [vercel.com](https://vercel.com) for auto-deploy.
+### **Deployer Assignment (Single Source of Truth)**
 
-**2. Backend (Render):**
-- Go to [render.com](https://render.com)
-- New Web Service → Connect GitHub repo
-- Build: `pip install -r requirements.txt`
-- Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- Add environment variables (see below)
+| Component | Deployer / Platform | Project Name | Root Directory | Guide |
+|-----------|---------------------|--------------|----------------|-------|
+| Frontend Web | Vercel | `meishi-bridge` | `web` | `deployment/frontend-vercel.md` |
+| Backend API | Vercel | `meishi-api` | `api` | `deployment/backend-vercel.md` |
+| PostgreSQL | Neon | backend-attached Neon project | n/a | `deployment/database-neon.md` |
 
-**3. Database (Supabase):**
-- Create project at [supabase.com](https://supabase.com)
-- Get connection string from Settings → Database
-- Create storage bucket: `cards`
+### **Critical Rules**
 
-**Environment Variables:**
-```env
-# Render (Backend)
-DATABASE_URL=<from Supabase>
-SECRET_KEY=<random string>
-SUPABASE_URL=<from Supabase>
-SUPABASE_KEY=<from Supabase>
-FRONTEND_URL=https://your-app.vercel.app
-
-# Vercel (Frontend)
-NUXT_PUBLIC_API_URL=https://your-api.onrender.com/api/v1
-NUXT_PUBLIC_APP_URL=https://your-app.vercel.app
-```
-
-**Done!** 🎉 Total cost: $0/month
+1. Frontend project stores only `NUXT_PUBLIC_*` variables.
+2. Backend project stores all secrets (`DATABASE_URL`, `SECRET_KEY`, etc.).
+3. Neon credentials must never be stored in frontend env vars.
 
 ---
 
@@ -90,6 +70,12 @@ Full guide below in [GCP Terraform Setup](#gcp-terraform-setup) section.
 
 ```
 infra/
+├── deployment/                    # Deployment runbooks (source of truth)
+│   ├── README.md
+│   ├── frontend-vercel.md
+│   ├── backend-vercel.md
+│   └── database-neon.md
+│
 ├── docker/
 │   ├── docker-compose.yml          # Local development
 │   ├── docker-compose.prod.yml     # Production-like local
@@ -300,7 +286,7 @@ terraform/gcp/
   2. Run tests (pytest)
   3. Build Docker image
   4. Push to registry
-  5. Deploy to Render
+  5. Deploy to Vercel backend project
 
 **`.github/workflows/web-ci.yml`**
 - Trigger: Push to `main` or PR
@@ -340,14 +326,15 @@ NUXT_PUBLIC_APP_URL=http://localhost:3000
 ### **Production (.env.prod)**
 ```bash
 # API
-DATABASE_URL=postgresql://user:pass@db.supabase.co:5432/postgres
+DATABASE_URL=postgresql://<neon-pooled-url>
+DATABASE_URL_UNPOOLED=postgresql://<neon-unpooled-url>
 SECRET_KEY=<strong-random-key>
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_KEY=<prod-key>
 FRONTEND_URL=https://meishibridge.com
 
 # Web
-NUXT_PUBLIC_API_URL=https://api.meishibridge.com/api/v1
+NUXT_PUBLIC_API_URL=https://meishi-api.vercel.app/api/v1
 NUXT_PUBLIC_APP_URL=https://meishibridge.com
 ```
 
@@ -378,9 +365,9 @@ NUXT_PUBLIC_APP_URL=https://meishibridge.com
 
 ### **Backups**
 
-**Automated (Supabase):**
-- Daily backups (free tier: 7 days retention)
-- Point-in-time recovery (paid tiers)
+**Automated (Neon):**
+- Use Neon built-in backup/history features based on your Neon plan
+- Prefer Neon branch-based workflows for schema changes when possible
 
 **Manual Backup:**
 ```bash
@@ -494,7 +481,7 @@ docker push ghcr.io/username/meishibridge-api:latest
 
 | Deployment | Stack | Monthly Cost | Best For |
 |------------|-------|--------------|----------|
-| **FREE (Manual)** | Vercel + Render + Supabase | **$0** | MVP, demos, interviews |
+| **Manual** | Vercel + Vercel + Neon | Varies by usage | MVP and production starter |
 | **GCP (Terraform)** | Cloud Run + Cloud SQL | **~$15-22** | Production, scaling |
 | **Multi-Cloud Premium** | Vercel Pro + Render Standard | **~$70** | If staying multi-cloud |
 
@@ -541,8 +528,7 @@ sudo chmod 666 /var/run/docker.sock
 - [Terraform Documentation](https://www.terraform.io/docs)
 - [GitHub Actions](https://docs.github.com/en/actions)
 - [Vercel Documentation](https://vercel.com/docs)
-- [Render Documentation](https://render.com/docs)
-- [Supabase Documentation](https://supabase.com/docs)
+- [Neon Documentation](https://neon.tech/docs)
 
 ---
 

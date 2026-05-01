@@ -33,8 +33,15 @@ _extra_origins = [
 
 allow_origins = list(dict.fromkeys(_default_origins + [settings.FRONTEND_URL] + _extra_origins))
 
-# Allow Vercel preview deployments (e.g. meishi-bridge-git-*.vercel.app).
-allow_origin_regex = r"^https://meishi-bridge(-[a-z0-9-]+)?\.vercel\.app$"
+# Allow Vercel production + preview domains.
+# Examples:
+# - https://meishi-bridge.vercel.app
+# - https://meishi-bridge-git-main-dinkar1708s-projects.vercel.app
+# You can override this with CORS_ORIGIN_REGEX env var if needed.
+allow_origin_regex = os.getenv(
+    "CORS_ORIGIN_REGEX",
+    r"^https://[a-z0-9-]+\.vercel\.app$",
+)
 
 app.add_middleware(
     CORSMiddleware,

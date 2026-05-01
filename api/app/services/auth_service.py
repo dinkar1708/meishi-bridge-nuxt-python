@@ -4,6 +4,7 @@ from datetime import timedelta
 from typing import Optional
 
 from fastapi import HTTPException, status
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.models.user import User
@@ -56,8 +57,23 @@ class AuthService:
         )
 
         db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
+        try:
+            db.commit()
+            db.refresh(db_user)
+        except IntegrityError:
+            db.rollback()
+            # Covers edge cases where a concurrent request inserts the same
+            # email/username between uniqueness check and commit.
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email or username already exists",
+            )
+        except SQLAlchemyError:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Registration failed due to a database error",
+            )
 
         return UserResponse.model_validate(db_user)
 

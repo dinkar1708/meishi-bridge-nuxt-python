@@ -108,8 +108,8 @@ Choose the module you want to work on:
 
 
 ## DEMO
-<img width="2469" height="1287" alt="Screenshot 2026-05-01 at 17 41 13" src="https://github.com/user-attachments/assets/7b4aa034-e951-4b23-a2f6-d57227b13724" />
-<img width="2432" height="1277" alt="Screenshot 2026-05-01 at 17 41 24" src="https://github.com/user-attachments/assets/6682ff7c-b165-4346-afe5-6dd7f0088499" />
+<img width="2487" height="1283" alt="Screenshot 2026-05-01 at 17 45 16" src="https://github.com/user-attachments/assets/5c6854f8-4269-41bf-824d-831e7e65a19e" />
+<img width="2447" height="1294" alt="Screenshot 2026-05-01 at 17 45 27" src="https://github.com/user-attachments/assets/8922493a-6a05-47c8-a3ea-27ff7918e7d6" />
 <img width="2430" height="1224" alt="Screenshot 2026-05-01 at 17 41 33" src="https://github.com/user-attachments/assets/90128809-af33-495e-a0d1-5e775f6d35bb" />
 <img width="2435" height="1218" alt="Screenshot 2026-05-01 at 17 41 41" src="https://github.com/user-attachments/assets/946b5437-8bac-4cef-90fc-e0138be55566" />
 

@@ -71,11 +71,14 @@ class AuthService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Email or username already exists",
             )
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             db.rollback()
+            detail = "Registration failed due to a database error"
+            if settings.DEBUG:
+                detail = f"Registration failed due to a database error: {e.__class__.__name__}: {str(e)}"
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Registration failed due to a database error",
+                detail=detail,
             )
         except Exception:
             db.rollback()

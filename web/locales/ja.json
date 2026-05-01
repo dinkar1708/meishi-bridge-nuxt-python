@@ -126,7 +126,14 @@
     "noCardsHint": "最初の名刺を作成して始めましょう",
     "viewPublic": "公開ページを開く",
     "deleteConfirm": "この名刺を削除してもよろしいですか？",
-    "createSuccess": "名刺を作成しました"
+    "createSuccess": "名刺を作成しました",
+    "share": "共有",
+    "saveContact": "連絡先に追加",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "scanQR": "QRコードをスキャン",
+    "notFound": "名刺が見つかりません",
+    "back": "ホームへ戻る"
   },
   "error": {
     "404": "ページが見つかりません",

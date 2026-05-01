@@ -96,7 +96,13 @@
         <aside class="lg:col-span-2">
           <div class="lg:sticky lg:top-6">
             <div class="text-xs tracking-[0.3em] text-primary-600 font-bold uppercase mb-3">{{ t('card.preview') }}</div>
-            <div class="bg-white text-gray-900 rounded-2xl p-6 shadow-2xl ring-1 ring-black/5">
+            <div
+              ref="previewEl"
+              @mousemove="onMouseMove"
+              @mouseleave="onMouseLeave"
+              :style="tiltStyle"
+              class="bg-white text-gray-900 rounded-2xl p-6 shadow-2xl ring-1 ring-black/5 transition-transform duration-200 ease-out will-change-transform"
+            >
               <div class="flex items-start justify-between mb-5">
                 <div>
                   <div class="text-[11px] tracking-[0.25em] text-primary-600 font-semibold uppercase">Meishi</div>
@@ -158,6 +164,18 @@ const form = reactive({
 
 const saving = ref(false)
 const errorMessage = ref('')
+
+const previewEl = ref<HTMLElement | null>(null)
+const tiltStyle = ref('')
+const onMouseMove = (e: MouseEvent) => {
+  const el = previewEl.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  const x = (e.clientX - rect.left) / rect.width - 0.5
+  const y = (e.clientY - rect.top) / rect.height - 0.5
+  tiltStyle.value = `transform: perspective(1000px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg);`
+}
+const onMouseLeave = () => { tiltStyle.value = '' }
 
 const qrPattern = [
   1,1,1,0,1,

@@ -85,13 +85,14 @@
           </div>
 
           <!-- Card grid -->
-          <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 [perspective:1200px]">
             <article
               v-for="card in myCards"
               :key="card.id"
-              class="group relative bg-white rounded-2xl ring-1 ring-gray-200 hover:ring-primary-300 hover:shadow-xl transition overflow-hidden"
+              class="group relative h-64 [transform-style:preserve-3d] transition-transform duration-700 hover:[transform:rotateY(180deg)]"
             >
-              <div class="p-5">
+              <!-- Front -->
+              <div class="absolute inset-0 [backface-visibility:hidden] bg-white rounded-2xl ring-1 ring-gray-200 shadow-md hover:shadow-xl transition-shadow overflow-hidden p-5 flex flex-col">
                 <div class="flex items-start justify-between mb-3">
                   <div>
                     <div class="text-[10px] tracking-[0.25em] text-primary-600 font-semibold uppercase">Meishi</div>
@@ -102,23 +103,35 @@
                 <div class="text-lg font-bold text-gray-900">{{ card.name }}</div>
                 <div v-if="card.name_kana" class="text-xs text-gray-500">{{ card.name_kana }}</div>
                 <div v-if="card.title" class="mt-2 inline-block px-2 py-0.5 rounded bg-primary-50 text-primary-700 text-[11px] font-semibold">{{ card.title }}</div>
-                <div v-if="card.company" class="mt-2 text-sm text-gray-600">{{ card.company }}</div>
+                <div v-if="card.company" class="mt-2 text-sm text-gray-600 truncate">{{ card.company }}</div>
+                <div class="mt-auto text-[11px] text-gray-400 pt-3 border-t border-gray-100">
+                  {{ t('card.preview') }} → hover
+                </div>
               </div>
-              <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between gap-2 bg-gray-50">
-                <button
-                  @click="onDelete(card)"
-                  class="text-xs text-gray-500 hover:text-red-600 transition font-medium"
-                >
-                  {{ t('common.delete') }}
-                </button>
-                <a
-                  :href="`/c/${card.public_slug}`"
-                  target="_blank"
-                  rel="noopener"
-                  class="text-xs text-primary-600 hover:text-primary-700 transition font-semibold"
-                >
-                  {{ t('card.viewPublic') }} →
-                </a>
+
+              <!-- Back -->
+              <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-primary-700 via-primary-800 to-[#0b1538] text-white rounded-2xl shadow-xl p-5 flex flex-col">
+                <div class="text-[10px] tracking-[0.3em] text-primary-200 font-bold uppercase mb-2">{{ t('card.viewPublic') }}</div>
+                <div class="text-base font-semibold truncate">{{ card.name }}</div>
+                <div class="text-xs text-white/60 break-all mt-1">{{ origin }}/c/{{ card.public_slug }}</div>
+
+                <div class="mt-auto grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    @click.stop="onDelete(card)"
+                    class="bg-white/10 hover:bg-red-500/80 ring-1 ring-white/20 transition px-3 py-2 rounded-lg text-xs font-semibold"
+                  >
+                    {{ t('common.delete') }}
+                  </button>
+                  <NuxtLink
+                    :to="`/c/${card.public_slug}`"
+                    target="_blank"
+                    rel="noopener"
+                    class="bg-white text-primary-800 hover:bg-primary-50 transition px-3 py-2 rounded-lg text-xs font-bold text-center"
+                  >
+                    {{ t('card.viewPublic') }} →
+                  </NuxtLink>
+                </div>
               </div>
             </article>
           </div>
@@ -138,6 +151,7 @@ const router = useRouter()
 
 const myCards = ref<any[]>([])
 const loading = ref(true)
+const origin = computed(() => process.client ? window.location.origin : '')
 
 const iconCard = () => h('svg', { class: 'w-5 h-5', fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [
   h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'M3 5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM7 8h10M7 12h6M7 16h4' })

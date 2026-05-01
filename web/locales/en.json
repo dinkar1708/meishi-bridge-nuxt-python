@@ -126,7 +126,14 @@
     "noCardsHint": "Create your first card to get started",
     "viewPublic": "Open public page",
     "deleteConfirm": "Are you sure you want to delete this card?",
-    "createSuccess": "Card created"
+    "createSuccess": "Card created",
+    "share": "Share",
+    "saveContact": "Save to contacts",
+    "copy": "Copy",
+    "copied": "Copied",
+    "scanQR": "Scan QR code",
+    "notFound": "Card not found",
+    "back": "Back to home"
   },
   "error": {
     "404": "Page not found",

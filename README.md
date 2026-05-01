@@ -1,4 +1,4 @@
-# MeishiBridge (メイシブリッジ).
+# MeishiBridge (メイシブリッジ)
 
 <div align="center">
 

@@ -35,6 +35,33 @@ export const useApi = () => {
   const config = useRuntimeConfig()
   const baseURL = config.public.apiUrl
 
+  const parseErrorMessage = (error: any): string => {
+    const detail =
+      error?.data?.detail ??
+      error?.response?._data?.detail ??
+      error?.response?._data?.message
+
+    if (typeof detail === 'string' && detail.trim()) {
+      return detail
+    }
+
+    if (Array.isArray(detail) && detail.length > 0) {
+      const first = detail[0]
+      if (typeof first?.msg === 'string') return first.msg
+      if (typeof first === 'string') return first
+    }
+
+    if (error?.statusCode === 500) {
+      return 'Server error. Please try again.'
+    }
+
+    if (typeof error?.message === 'string' && error.message.trim()) {
+      return error.message
+    }
+
+    return 'Request failed. Please try again.'
+  }
+
   const authHeader = (): Record<string, string> => {
     if (!process.client) return {}
     const token = localStorage.getItem('auth-token')
@@ -59,11 +86,11 @@ export const useApi = () => {
       })
       return response
     } catch (error: any) {
-      console.error('API Error:', error)
       throw {
-        message: error.message,
-        data: error.data,
-        statusCode: error.statusCode
+        message: parseErrorMessage(error),
+        detail: error?.data?.detail ?? error?.response?._data?.detail,
+        data: error?.data ?? error?.response?._data,
+        statusCode: error?.statusCode ?? error?.response?.status
       }
     }
   }

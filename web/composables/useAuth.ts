@@ -2,6 +2,19 @@ export const useAuth = () => {
   const api = useApi()
   const router = useRouter()
 
+  const normalizeAuthError = (error: any, fallback: string) => {
+    if (typeof error?.detail === 'string' && error.detail.trim()) {
+      return error.detail
+    }
+    if (typeof error?.data?.detail === 'string' && error.data.detail.trim()) {
+      return error.data.detail
+    }
+    if (typeof error?.message === 'string' && error.message.trim()) {
+      return error.message
+    }
+    return fallback
+  }
+
   // State
   const token = useState<string | null>('auth-token', () => null)
   const user = useState<any>('auth-user', () => null)
@@ -18,9 +31,7 @@ export const useAuth = () => {
   // Login
   const login = async (email: string, password: string) => {
     try {
-      console.log('Attempting login for:', email)
       const response = await api.auth.login(email, password)
-      console.log('Login response:', response)
       token.value = response.access_token
 
       // Store token in localStorage
@@ -33,12 +44,9 @@ export const useAuth = () => {
 
       return { success: true }
     } catch (error: any) {
-      console.error('Login error:', error)
-      const errorMessage = error.data?.detail || error.message || 'Login failed'
-      console.error('Error message:', errorMessage)
       return {
         success: false,
-        error: errorMessage
+        error: normalizeAuthError(error, 'Login failed')
       }
     }
   }
@@ -51,21 +59,14 @@ export const useAuth = () => {
     full_name?: string
   }) => {
     try {
-      console.log('useAuth.register called with:', data)
-      const response = await api.auth.register(data)
-      console.log('Registration API response:', response)
+      await api.auth.register(data)
 
       // Auto-login after registration
-      console.log('Auto-login after registration...')
       return await login(data.email, data.password)
     } catch (error: any) {
-      console.error('Registration error:', error)
-      console.error('Registration error details:', error.data)
-      const errorMessage = error.data?.detail || error.message || 'Registration failed'
-      console.error('Error message:', errorMessage)
       return {
         success: false,
-        error: errorMessage
+        error: normalizeAuthError(error, 'Registration failed')
       }
     }
   }
@@ -73,14 +74,11 @@ export const useAuth = () => {
   // Fetch current user
   const fetchUser = async () => {
     if (!token.value) {
-      console.log('fetchUser: No token, skipping')
       return
     }
 
     try {
-      console.log('fetchUser: Fetching user with token:', token.value.substring(0, 20) + '...')
       const userData = await api.auth.getCurrentUser(token.value)
-      console.log('fetchUser: User data received:', userData)
       user.value = userData
     } catch (error) {
       console.error('Fetch user error:', error)

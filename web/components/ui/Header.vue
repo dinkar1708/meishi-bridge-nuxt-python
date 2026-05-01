@@ -37,12 +37,11 @@
           <!-- Language Switcher -->
           <div class="flex items-center">
             <select
-              v-model="selectedLocale"
-              @change="changeLanguage"
+              @change="onLocaleChange"
               class="text-sm border border-gray-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             >
-              <option value="ja">🇯🇵 日本語</option>
-              <option value="en">🇬🇧 English</option>
+              <option value="ja" :selected="locale === 'ja'">🇯🇵 日本語</option>
+              <option value="en" :selected="locale === 'en'">🇬🇧 English</option>
             </select>
           </div>
         </div>
@@ -52,37 +51,16 @@
 </template>
 
 <script setup lang="ts">
-const { t, locale, setLocale } = useI18n()
+const { t, locale } = useI18n()
 const { user, logout } = useAuth()
 
-// Use a ref for the select value
-const selectedLocale = ref(locale.value)
-
-const changeLanguage = () => {
-  // Save to localStorage
-  localStorage.setItem('user-locale', selectedLocale.value)
-
-  // Set the locale
-  setLocale(selectedLocale.value)
-
-  // Immediately reload the page
-  location.reload()
+const onLocaleChange = (event: Event) => {
+  const next = (event.target as HTMLSelectElement).value
+  document.cookie = `i18n_redirected=${next}; path=/; max-age=31536000; samesite=lax`
+  window.location.reload()
 }
 
 const handleLogout = () => {
   logout()
 }
-
-// On mount, restore saved locale
-onMounted(() => {
-  const savedLocale = localStorage.getItem('user-locale')
-  if (savedLocale) {
-    selectedLocale.value = savedLocale
-    if (savedLocale !== locale.value) {
-      setLocale(savedLocale)
-    }
-  } else {
-    selectedLocale.value = locale.value
-  }
-})
 </script>

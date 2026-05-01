@@ -32,8 +32,15 @@ export default defineNuxtConfig({
     defaultLocale: 'ja',
     lazy: true,
     langDir: 'locales/',
+    restructureDir: false,
     strategy: 'no_prefix',
-    detectBrowserLanguage: false  // Disable browser language detection to use default
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: true,
+      fallbackLocale: 'ja'
+    }
   },
 
   // App configuration

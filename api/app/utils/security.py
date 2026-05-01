@@ -8,8 +8,14 @@ from passlib.context import CryptContext
 
 from app.config import settings
 
-# Password hashing context (bcrypt with 12 rounds)
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Password hashing context.
+# Use pbkdf2_sha256 as default for serverless portability, while still
+# accepting legacy bcrypt hashes for existing users.
+pwd_context = CryptContext(
+    schemes=["pbkdf2_sha256", "bcrypt"],
+    default="pbkdf2_sha256",
+    deprecated="auto",
+)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
